@@ -23,16 +23,18 @@
 
     *{box-sizing:border-box;margin:0;padding:0}
     body{
-      min-height:100vh;
-      height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:var(--pink-bg);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-             "Quicksand", system-ui, sans-serif;
-      overflow:hidden;
-    }
+  height: 100vh;          /* fallback */
+  min-height: 100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--pink-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+         "Quicksand", system-ui, sans-serif;
+
+  overflow:hidden;
+}
 
     /* ======= PHONE MOCK ======= */
     .phone-wrap{
@@ -898,6 +900,19 @@
       inset 0 2px 0 rgba(255,255,255,.28);
   }
 }
+
+/* ===== ANDROID CHROME FIX (ANTI KEPOTONG) ===== */
+@supports not (-webkit-touch-callout: none) {
+  body{
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
+@supports not (-webkit-touch-callout: none) {
+  .phone-wrap{
+    height: min(710px, calc(var(--vh, 1vh) * 92));
+  }
+}
   </style>
 </head>
 
@@ -1161,6 +1176,17 @@
   </div>
 
 <script>
+  
+  /* ===== FIX 100vh ANDROID ===== */
+  function setVH(){
+    document.documentElement.style.setProperty(
+      '--vh',
+      (window.innerHeight * 0.01) + 'px'
+    );
+  }
+  setVH();
+  window.addEventListener('resize', setVH);
+
   /* ===== PASS UI ===== */
   const PASS = "070624";
   const PASS_LEN = 6;
